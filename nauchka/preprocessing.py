@@ -8,7 +8,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import pymorphy2
 from wordcloud import WordCloud
 import nltk
-
+#pip install seaborn, nltk, wordcloud, pymorphy2, sklearn
+#python preprocessing.py
 try:
     nltk.data.find('corpora/stopwords')
 except LookupError:
@@ -34,8 +35,8 @@ def get_stopwords():
     """список стоп-слов"""
     stop_words = set(stopwords.words('russian'))
     fairy_tale_stopwords = {
-        'сказка', 'жили', 'были', 'стали', 'пойти', 'пошел', 'пошла', 'сказал', 
-        'говорит', 'видеть', 'видел', 'однажды', 'тут', 'вот', 'это', 'как', 'так',
+        'мы', 'свой', 'ты', 'сам', 'мой',
+        'тут', 'вот', 'это', 'как', 'так',
         'очень', 'много', 'мало', 'еще', 'уже', 'опять', 'опятьтаки', 'ведь'
     }
     return stop_words.union(fairy_tale_stopwords)
@@ -55,12 +56,14 @@ def preprocess_text(text, stop_words):
     
     lemmas = []
     for token in tokens:
-        if len(token) > 2 and token not in stop_words:
+        if len(token) > 2:
             try:
                 lemma = morph.parse(token)[0].normal_form
-                lemmas.append(lemma)
+                if lemma not in stop_words:
+                    lemmas.append(lemma)
             except:
-                lemmas.append(token)
+                if token not in stop_words:
+                    lemmas.append(token)
     
     return lemmas
 
@@ -91,8 +94,8 @@ if __name__ == "__main__":
         print(f"Общее количество слов: {df['processed_text'].apply(len).sum()}")
         print(f"Средняя длина сказки: {df['processed_text'].apply(len).mean():.1f} слов")
 
-        df.to_csv('processed_tales.csv', index=False, encoding='utf-8')
-        df.to_pickle('processed_tales.pkl')
+        df.to_csv('processed_tales_clean.csv', index=False, encoding='utf-8')
+        df.to_pickle('processed_tales_clean.pkl')
         
     except Exception as e:
         print(f"Произошла ошибка: {e}")

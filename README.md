@@ -159,3 +159,7 @@
 pip install -r requirements.txt
 ```
 3. **Запустить анализ датасета** - частотный, ключевой или тональный (`frequency_analysis.py`, `keyness_analysis.py`, `sentiment_analysis.py`)
+
+## Автор
+
+**Лена** - [GitHub](https://github.com/monalenka)

@@ -1,0 +1,5 @@
+venv/
+data/raw
+pre-processing/
+analysis/rendering.py
+data/processed_tales_clean.csv
